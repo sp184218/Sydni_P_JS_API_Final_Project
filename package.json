@@ -1,5 +1,5 @@
 {
-  "name": "star_wars_character_db",
+  "name": "killer_instinct_character_db",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,6 +9,38 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "vite": "^6.3.5"
-  }
+    "vite": "^3.2.0"
+  },
+  "description": "A fun, interactive way to explore characters from the Killer Instinct universe!",
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "esbuild": "^0.25.4",
+    "express": "^5.1.0",
+    "fdir": "^6.4.4",
+    "nanoid": "^3.3.11",
+    "node-fetch": "^3.3.2",
+    "picocolors": "^1.1.1",
+    "picomatch": "^4.0.2",
+    "postcss": "^8.5.3",
+    "rollup": "^4.40.2",
+    "source-map-js": "^1.2.1",
+    "tinyglobby": "^0.2.13"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sp184218/KillerInstinct_Character_DB.git"
+  },
+  "keywords": [
+    "Killer Instinct",
+    "Character Database",
+    "API",
+    "Fetch"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sp184218/KillerInstinct_Character_DB/issues"
+  },
+  "homepage": "https://github.com/sp184218/KillerInstinct_Character_DB#readme"
 }

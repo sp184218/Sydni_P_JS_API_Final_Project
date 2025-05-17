@@ -1,5 +1,3 @@
-// Updated JS: Characters shown in alphabetical order by default, searchable by name
-
 let debounceTimeout;
 let currentPage = 1;
 const itemsPerPage = 20;
@@ -11,28 +9,55 @@ const searchInput = document.getElementById("search-input");
 const results = document.getElementById("results");
 const paginationControls = document.getElementById("pagination-controls");
 
-const customDescriptions = {
-  "Yoda": "A wise Jedi Master, over 900 years old, who played a key role in the Clone Wars.",
-  "Padmé Amidala": "A courageous queen turned senator, dedicated to peace in the Galactic Republic.",
-  "Leia Organa": "A fearless leader of the Rebel Alliance, known for her diplomacy and combat skills.",
-  "Han Solo": "A legendary smuggler turned hero, captain of the Millennium Falcon.",
-  "Luke Skywalker": "A Jedi Knight who restored hope to the galaxy, trained by Yoda and Obi-Wan Kenobi.",
-  "Darth Vader": "A Sith Lord formerly known as Anakin Skywalker, wielding a red lightsaber.",
-  "Chewbacca": "A Wookiee warrior and Han Solo's co-pilot, known for his strength and loyalty.",
-  "Lando Calrissian": "A charismatic gambler and strategist who became an essential Rebel ally.",
-  "Finn": "A former stormtrooper who fought for the Resistance, choosing freedom over tyranny.",
-  "Rey": "A skilled Force user who seeks the balance between Light and Dark.",
-  "Poe Dameron": "An ace pilot and commander in the Resistance, known for daring tactics.",
-  "BB8": "A resourceful droid companion to Rey and sometimes Poe, rolling into action when needed.",
-  "R2-D2": "A heroic astromech droid who aided Jedi and Rebels across generations.",
-  "C-3PO": "A protocol droid fluent in over six million forms of communication, often anxious but loyal.",
-  "Darth Maul": "A Sith apprentice with a double-bladed lightsaber, known for his fierce combat and hatred of the Jedi.",
-  "Obi-Wan Kenobi": "A noble Jedi Master who trained Anakin and Luke Skywalker, known for wisdom and bravery."
-};
+// Spinner setup
+const spinner = document.createElement("div");
+spinner.innerHTML = `<div class="loader">Loading...</div>`;
+Object.assign(spinner.style, {
+  textAlign: "center",
+  marginTop: "20px"
+});
+results.parentElement.insertBefore(spinner, results);
+hideSpinner(); // initially hidden
 
+function showSpinner() {
+  spinner.style.display = "block";
+}
+
+function hideSpinner() {
+  spinner.style.display = "none";
+}
+
+// Fetch characters from the API
+async function fetchKICharacters() {
+  showSpinner();
+  try {
+    const res = await fetch("https://finalkillerinstinctapi.onrender.com/api/scrape/characters");
+    const data = await res.json();
+
+    if (!Array.isArray(data?.characters)) {
+      throw new Error("Characters data not in expected array format");
+    }
+
+    allCharacters = data.characters.map((char, index) => ({
+      id: index.toString(),
+      name: char.name?.trim() || "Unknown",
+      description: char.description?.trim() || "No description provided.",
+      images: Array.isArray(char.images) ? char.images : [],
+      url: char.url || "#"
+    }));
+
+    updateDisplay();
+  } catch (err) {
+    console.error("Error fetching character list:", err);
+    displayError("Failed to load character list.");
+  } finally {
+    hideSpinner();
+  }
+}
+
+// Debounced search input
 searchInput.addEventListener("input", function (e) {
-  searchQuery = capitalizeName(e.target.value);
-
+  searchQuery = e.target.value.trim();
   clearTimeout(debounceTimeout);
   debounceTimeout = setTimeout(() => {
     currentPage = 1;
@@ -40,38 +65,54 @@ searchInput.addEventListener("input", function (e) {
   }, 500);
 });
 
+// Pagination controls
 function setPaginationControls() {
   const totalPages = Math.ceil(filteredCharacters.length / itemsPerPage);
-  const pagination = document.createElement('div');
+  paginationControls.innerHTML = "";
 
-  pagination.innerHTML = `
-    <button id="prev-button" ${currentPage === 1 ? "disabled" : ""}>Previous</button>
-    <span>Page ${currentPage} of ${totalPages}</span>
-    <button id="next-button" ${currentPage === totalPages ? "disabled" : ""}>Next</button>
-  `;
+  if (totalPages <= 1) return;
 
-  pagination.querySelector("#prev-button").addEventListener('click', () => {
+  const prevBtn = document.createElement("button");
+  prevBtn.textContent = "Previous";
+  prevBtn.disabled = currentPage === 1;
+  prevBtn.addEventListener("click", () => {
     if (currentPage > 1) {
       currentPage--;
       updateDisplay();
     }
   });
 
-  pagination.querySelector("#next-button").addEventListener('click', () => {
+  const pageInfo = document.createElement("span");
+  pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+
+  const nextBtn = document.createElement("button");
+  nextBtn.textContent = "Next";
+  nextBtn.disabled = currentPage === totalPages;
+  nextBtn.addEventListener("click", () => {
     if (currentPage < totalPages) {
       currentPage++;
       updateDisplay();
     }
   });
 
-  paginationControls.innerHTML = "";
-  paginationControls.appendChild(pagination);
+  paginationControls.append(prevBtn, pageInfo, nextBtn);
 }
 
+// Main display logic
 function updateDisplay() {
+  if (!allCharacters.length) {
+    displayError("No characters loaded.");
+    return;
+  }
+
   filteredCharacters = allCharacters.filter(character =>
     character.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  if (!filteredCharacters.length) {
+    displayError("No characters found.");
+    return;
+  }
 
   const start = (currentPage - 1) * itemsPerPage;
   const end = start + itemsPerPage;
@@ -79,143 +120,155 @@ function updateDisplay() {
   setPaginationControls();
 }
 
-async function fetchCharacters() {
-  const databankUrl = `https://starwars-databank-server.vercel.app/api/v1/characters?page=1&limit=1000`;
-  const akababUrl = `https://akabab.github.io/starwars-api/api/all.json`;
-
-  try {
-    const [databankRes, akababRes] = await Promise.all([fetch(databankUrl), fetch(akababUrl)]);
-
-    const databankData = await databankRes.json();
-    const akababData = await akababRes.json();
-
-    const akababMap = {};
-    akababData.forEach((char) => {
-      akababMap[char.name.toLowerCase()] = {
-        id: `akabab-${char.id}`,
-        image: char.image || "",
-        description: char.description || "",
-      };
-    });
-
-    const databankCharacters = databankData.data.map((char) => {
-      const key = char.name.trim();
-      const akababMatch = akababMap[key.toLowerCase()];
-
-      return {
-        _id: char._id,
-        name: key,
-        description: customDescriptions[key] || char.description || akababMatch?.description || "More info coming soon...",
-        image: akababMatch?.image || "",
-      };
-    });
-
-    const databankNames = new Set(databankCharacters.map(c => c.name.toLowerCase()));
-    const akababOnly = akababData.filter(c => !databankNames.has(c.name.toLowerCase())).map(c => {
-      const key = c.name;
-      return {
-        _id: `akabab-${c.id}`,
-        name: key,
-        description: customDescriptions[key] || c.description || "More info coming soon...",
-        image: c.image || "",
-      };
-    });
-
-    allCharacters = [...databankCharacters, ...akababOnly].sort((a, b) => a.name.localeCompare(b.name));
-
-    updateDisplay();
-
-  } catch (error) {
-    console.error("Fetch Error:", error);
-    displayError();
-  }
-}
-
+// Display characters in list
 function displayCharacters(characters) {
-  const list = characters.map(character => `
+  const html = characters.map(char => `
     <li>
-      <a href="#" data-url="${character._id}">${character.name}</a>
+      <a href="#" data-id="${char.id}">${escapeHTML(char.name)}</a>
     </li>
-  `).join(" ");
+  `).join("");
 
-  results.innerHTML = `<ul class="characters">${list}</ul>`;
+  results.innerHTML = html;
 
-  document.querySelectorAll('.characters a').forEach(link => {
-    link.addEventListener('click', (e) => {
+  document.querySelectorAll("#results a").forEach(link => {
+    link.addEventListener("click", (e) => {
       e.preventDefault();
-      const id = e.target.dataset.url;
-      const character = allCharacters.find(c => c._id === id);
+      const id = e.target.dataset.id;
+      const character = allCharacters.find(c => c.id === id);
       if (character) showCharacterDialog(character);
     });
   });
 }
 
+// Show character details
 function showCharacterDialog(character) {
-  const dialog = document.getElementById("character-dialog");
-  const dialogBody = document.getElementById("dialog-body");
+  const modal = document.createElement("div");
+  modal.classList.add("character-modal");
 
-  dialogBody.innerHTML = `
-    <h2>${character.name}</h2>
-    ${character.image ? `<img src="${character.image}" alt="${character.name}" style="max-width: 100%; border-radius: 10px; margin: 10px 0;" />` : ''}
-    <p>${character.description}</p>
-  `;
+  const image = character.images[0] || "";
+  const safeDescription = escapeHTML(character.description);
+  const safeURL = character.url;
 
-  dialog.classList.remove("hidden");
-  document.getElementById("close-dialog").addEventListener('click', () => {
-    dialog.classList.add("hidden");
+ modal.innerHTML = `
+  <div class="character-content" style="background: #fff; color: #000; padding: 20px; border-radius: 10px; max-width: 500px;">
+    <h2>${escapeHTML(character.name)}</h2>
+    ${image ? `<img src="${image}" alt="${escapeHTML(character.name)}" style="max-width: 200px; display:block; margin: 10px auto;" />` : ""}
+    <p style="white-space: pre-line;">${safeDescription}</p>
+    <a href="${safeURL}" target="_blank" rel="noopener noreferrer">More info</a>
+    <br><br>
+    <button id="close-modal">Close</button>
+  </div>
+`;
+
+  Object.assign(modal.style, {
+    position: "fixed",
+    top: "0",
+    left: "0",
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0,0,0,0.7)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: "9999"
+  });
+
+  document.body.appendChild(modal);
+
+  document.getElementById("close-modal").addEventListener("click", () => {
+    modal.remove();
   });
 }
 
-function displayError() {
-  results.innerHTML = "<ul class='characters'><li>The characters you seek are not here</li></ul>";
+// Show error in UI
+function displayError(message) {
+  results.innerHTML = `<p style="color:red;">${escapeHTML(message)}</p>`;
+  paginationControls.innerHTML = "";
 }
 
-function capitalizeName(query) {
-  return query
-    .split(" ")
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(" ");
+// Escape HTML to prevent injection and layout breakage
+function escapeHTML(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
-document.addEventListener("click", function () {
-  const video = document.getElementById("background-video");
-  if (video) {
-    video.muted = false;
-    video.play();
+// Start app
+fetchKICharacters();
+document.addEventListener("DOMContentLoaded", function () {
+  const videoModal = document.getElementById("intro-modal");
+  const video = document.getElementById("intro-video");
+  const overlay = document.getElementById("start-overlay");
+  const startBtn = document.getElementById("start-button");
+
+  // Just in case any elements are missing
+  if (!videoModal || !video || !overlay || !startBtn) {
+    console.error("Modal elements missing");
+    return;
   }
-});
 
-fetchCharacters();
-window.addEventListener("DOMContentLoaded", () => {
-  const modal = document.getElementById("intro-modal");
-  const crawlOverlay = document.querySelector('.crawl-overlay');
-  const uiWrapper = document.querySelector('.ui-wrapper');
-  const video = document.getElementById("background-video");
+  // Show both modals initially
+  videoModal.style.display = "flex";
+  overlay.style.display = "flex";
 
-  // Close the modal and start the video
-  const closeModal = () => {
-    modal.style.display = "none";
-    if (video) {
-      video.muted = false;
-      video.play();
-    }
+  // Start with muted autoplay
+  video.currentTime = 0;
+  video.muted = true;
+  video.play().catch(err => console.warn("Muted autoplay failed:", err));
 
-    // Give DOM a chance to update
-    setTimeout(() => {
-      crawlOverlay.classList.add('fade-out');  // Trigger the fade out effect
-      uiWrapper.classList.add('ready');  // Update UI (or anything else needed)
-    }, 200);  // Small delay before starting fade-out
-  };
+  // Start button logic
+  startBtn.addEventListener("click", () => {
+    overlay.style.display = "none";     // Hide overlay modal
+    video.muted = false;                // Unmute and restart video
+    video.currentTime = 0;
+    video.play().catch(err => console.error("Playback with sound failed:", err));
+  });
 
-  // Trigger modal close after crawl finishes (30s) automatically
-  setTimeout(() => {
-    closeModal();
-  }, 60000); // Adjust if crawl duration changes
+    // Close video modal on *any* click (except the start button itself)
+  document.addEventListener("click", (e) => {
+    // Ignore clicks on the start button
+    if (e.target === startBtn) return;
 
-  modal.addEventListener("click", closeModal);
+    // Hide overlay and video modal
+    overlay.style.display = "none";
+    videoModal.style.display = "none";
+    video.pause();
+    video.currentTime = 0;
+  });
+
+  // Close video modal and stop video on spacebar
   document.addEventListener("keydown", (e) => {
-    if (e.code === "Space" && !document.querySelector("input:focus")) {
-      closeModal();
+    if (e.code === "Space") {
+      overlay.style.display = "none";
+      videoModal.style.display = "none";
+      video.pause();
+      video.currentTime = 0;
     }
   });
 });
+
+// Cursor Selector Logic
+const chooseCursorBtn = document.getElementById('chooseCursorBtn');
+const modal = document.getElementById('cursorModal');
+const closeModal = document.getElementById('closeModal');
+const cursorOptions = document.querySelectorAll('.cursor-option');
+
+if (chooseCursorBtn && modal && closeModal && cursorOptions.length) {
+  chooseCursorBtn.onclick = () => modal.classList.remove('hidden');
+  closeModal.onclick = () => modal.classList.add('hidden');
+
+  cursorOptions.forEach(img => {
+    img.addEventListener('click', () => {
+      const imgURL = img.getAttribute('src');
+      document.body.style.cursor = `url(${imgURL}), auto`;
+      modal.classList.add('hidden');
+    });
+  });
+} else {
+  console.warn("Cursor modal elements are missing from the DOM.");
+}
+
+

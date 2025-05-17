@@ -1,80 +1,92 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Star Wars Character DB</title>
-    <link rel="stylesheet" href="/src/style.css" />
-  </head>
-  <body>
-    <div id="intro-modal" class="crawl-container">
-  <div class="fade"></div>
-  <section class="star-wars">
-    <div class="crawl">
-      <div class="title">
-        <p>🌌 Sydematic Presents</p>
-        <h1>Star Wars Character DB</h1>
-      </div>
-      <br><p>Welcome to a galaxy of interactivity!</p>
-      <br><p>This began as a humble search bar assignment... but naturally, I went full Jedi and launched it into hyperspace.</p>
-      <br><p>Connect with live APIs. Search real-time. Explore over 100+ characters dynamically rendered in a stylized interface. And yes, there's a Baby Yoda and Green Lightsaber cursor.</p>
-      <br><p>Click anywhere or press the spacebar to begin your journey or you can just sit there looking at the words until it fades away lol...</p>
-     <br> <p>Built by Sydni Poteat — National Security student by day, Code Padawan by night. One with the Force... and the DOM.</p>
-    </div>
-  </section>
-</div>
-    <!-- Search Container -->
-    <div class="search-container">
-      <input type="text" id="search-input" class="search-input" placeholder="Search..." />
-      <button class="search-button">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-          stroke-linejoin="round" class="feather feather-search">
-          <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
-      </button>
-    </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Killer Instinct Character DB</title>
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
 
-    <!-- Character Results Section -->
-    <div class="results-wrapper">
-      <ul class="characters" id="results">
-        <!-- Character items will be dynamically inserted here -->
-      </ul>
-    </div>
+  <!-- Start Overlay Modal -->
+  <div id="start-overlay" class="start-overlay-modal">
+    <img src="KI killer instinct purple gold.jpeg" alt="Start Image" class="start-image" />
+    <button id="start-button">Start</button>
+  </div>
 
-    <!-- Pagination Controls -->
-    <div id="pagination-controls"></div>
-
-    <!-- Character Dialog (Popup) -->
-    <div id="character-dialog" class="dialog hidden">
-      <div class="dialog-content">
-        <span id="close-dialog" class="close">&times;</span>
-        <div id="dialog-body"></div>
-      </div>
-    </div>    
-
-    <!-- Background Video -->
- <video id="background-video" autoplay loop playsinline>
-      <source src="star wars.mp4" type="video/mp4">
+  <!-- Intro Video Modal -->
+  <div id="intro-modal" class="intro-video-modal">
+    <video id="intro-video" autoplay muted playsinline>
+      <source src="Modal KI Intro.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
     </video>
 
-    <script type="module" src="/src/main.js"></script>
-    <script>
-  const video = document.getElementById('background-video');
+    <div class="modal-buttons">
+      <button id="choose-cursor">Choose Cursor</button>
+      <button id="random-cursor">Click Random Cursor</button>
+    </div>
+  </div>
 
-  // ✅ Remove click toggle — no longer needed or wanted
+  <!-- Cursor Selection Modal -->
+  <div id="cursorModal" class="modal hidden">
+    <div class="modal-content">
+      <span id="closeModal" class="close" role="button" aria-label="Close Cursor Modal">&times;</span>
+      <h2>Select Your Cursor</h2>
+      <div class="cursor-grid">
+        <!-- Cursor Options -->
+        <img src="images/Shadow Jago-Photoroom.png" class="cursor-option" alt="Shadow Jago">
+        <img src="images/spinal-Photoroom.png" class="cursor-option" alt="Spinal">
+        <img src="images/TJ Combo-Photoroom.png" class="cursor-option" alt="TJ Combo">
+        <img src="images/Tusk-Photoroom.png" class="cursor-option" alt="Tusk">
+        <img src="images/Sabrewulf-Photoroom.png" class="cursor-option" alt="Sabrewulf">
+        <img src="images/orchid (1)-Photoroom.png" class="cursor-option" alt="Orchid">
+        <img src="images/kim-Photoroom.png" class="cursor-option" alt="Kim Wu">
+        <img src="images/Maya-Photoroom.png" class="cursor-option" alt="Maya">
+        <img src="images/Jago-Photoroom.png" class="cursor-option" alt="Jago">
+        <img src="images/cinder-Photoroom.png" class="cursor-option" alt="Cinder">
+        <img src="images/fulgore-original-Photoroom.png" class="cursor-option" alt="Fulgore">
+        <img src="images/glacius-Photoroom.png" class="cursor-option" alt="Glacius">
+      </div>
+    </div>
+  </div>
 
-  // ✅ Spacebar toggles mute (ignore if typing in input)
-  document.addEventListener('keydown', (e) => {
-    const isTyping = document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA';
-    if (e.code === 'Space' && !isTyping) {
-      e.preventDefault(); // Prevent page from scrolling
-      video.muted = !video.muted;
-    }
-  });
-</script>
-<script type="module" src="/src/main.js"></script>
-  </body>
+  <!-- Search Container -->
+  <div class="search-container">
+    <input type="text" id="search-input" class="search-input" placeholder="Search a warrior..." />
+    <button id="search-button" class="search-button" aria-label="Search">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round" class="feather feather-search">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Character Results Section -->
+  <div class="results-wrapper">
+    <ul class="characters" id="results">
+      <!-- Character items dynamically inserted here -->
+    </ul>
+  </div>
+
+  <!-- Pagination Controls -->
+  <div id="pagination-controls"></div>
+
+  <!-- Character Dialog -->
+  <div id="character-dialog" class="dialog hidden">
+    <div class="dialog-content">
+      <span id="close-dialog" class="close" role="button" aria-label="Close">&times;</span>
+      <div id="dialog-body"></div>
+    </div>
+  </div>
+
+  <!-- Background Video -->
+  <video id="background-video" autoplay loop muted playsinline>
+    <source src="killer_instinct_intro.mp4" type="video/mp4" />
+  </video>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
 </html>
+

@@ -1,23 +1,220 @@
-/* Basic Reset */
-* {
+body {
+  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  background-color: #222;
+  color: white;
+  text-align: center;
 }
 
-body {
+#search-input {
+  padding: 10px;
+  font-size: 16px;
+  margin: 20px 0;
+  width: 80%;
+  max-width: 400px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+#results {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.characters {
+  list-style-type: none;
+  padding: 0;
+}
+
+.characters li {
+  margin: 10px;
+  padding: 15px;
+  background-color: #333;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.characters li:hover {
+  background-color: #444;
+}
+
+#pagination-controls {
+  margin-top: 20px;
+}
+
+#pagination-controls button {
+  background-color: #444;
+  color: white;
+  border: 1px solid #777;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+#pagination-controls button[disabled] {
+  background-color: #333;
+  cursor: not-allowed;
+}
+
+#character-dialog {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #222;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 600px;
+  z-index: 1000;
+  text-align: left;
+}
+
+#dialog-body h2 {
+  color: #8e4949;
+}
+
+#close-dialog {
+  margin-top: 10px;
+  background-color: red;
+  color: #8e4949;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#close-dialog:hover {
+  background-color: #cc0000;
+}
+
+.hidden {
+  display: none;
+}
+.character-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.character-content {
+  background: #fff;
+  color: #000;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 500px;
+}
+
+.loader {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #444;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto;
+}
+
+
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+@media (max-width: 768px) {
+  #search-input {
+    width: 90%;
+  }
+}
+#intro-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
   height: 100vh;
+  background-color: black;
+  z-index: 9998;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+  overflow: hidden;
 }
 
-#background-video {
+#intro-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.intro-video-modal {
   position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  z-index: 9998;
+}
+
+.intro-video-modal video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modal-buttons {
+  position: absolute;
+  width: 100%;
+  bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 30px;
+}
+
+.modal-buttons button {
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #00ffcc;
+  border: 2px solid #00ffcc;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 16px;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+.modal-buttons button:hover {
+  background-color: rgba(0, 255, 204, 0.3);
+}
+
+#start-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.start-image {
+  position: absolute;
   top: 0;
   left: 0;
   width: 100vw;
@@ -26,294 +223,81 @@ body {
   z-index: -1;
 }
 
-.search-container {
-  display: flex;
-  align-items: center;
-  max-width: 400px;
-  margin: 20px auto;
-  border: 2px solid #ccc;
-  border-radius: 25px;
-  overflow: hidden;
-  transition: border-color 0.3s ease;
-  background-color: #333;
-}
-
-.search-container input {
-  flex-grow: 1;
-  border: none;
-  padding: 10px 15px;
-  font-size: 16px;
-  outline: none;
-  color: white;
-  background-color: transparent;
-}
-
-.search-container button {
-  padding: 10px 20px;
-  background-color: #ffe81f;
-  color: white;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease, text-shadow 0.3s ease;
-}
-
-.search-container button:hover {
-  background-color: #bd3c04;
-  text-shadow: 0 0 5px #ffe81f, 0 0 10px #ffe81f; /* Glowing effect */
-}
-
-.search-container button:active {
-  background-color: #ff591f;
-  text-shadow: 0 0 10px #ffe81f, 0 0 15px #ffe81f;
-}
-
-/* Results container */
-.results-wrapper {
-  width: 100%;
-  max-width: 800px;
-  background-color: rgba(0, 0, 0, 0.7);
-  padding: 20px;
-  margin: 20px auto;
-  border-radius: 15px;
-}
-
-/* Character list */
-.characters {
-  list-style-type: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: space-between;
-}
-
-.characters > li {
-  flex: 1 1 calc(33.333% - 20px);
-  color: white;
-  box-sizing: border-box;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.characters > li a {
-  display: block;
-  color: #ffe81f;
-  text-decoration: none;
+#start-button {
+  margin-top: 20px;
+  padding: 12px 24px;
+  font-size: 1.25rem;
+  background: gold;
+  color: purple;
   font-weight: bold;
-  transition: color 0.3s ease, text-shadow 0.3s ease;
+  font-family: 'Orbitron', sans-serif;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
 }
 
-.characters > li a:hover {
-  color: white;
-  text-shadow: 0 0 5px #ffe81f, 0 0 10px #ffe81f;
+#start-button:hover {
+  background-color: #ffd700;
 }
 
-/* Pagination controls */
-#pagination-controls {
-  color: white;
+body {
+  font-family: sans-serif;
+}
+
+button {
+  margin: 20px;
+  padding: 10px 20px;
   font-size: 18px;
-  font-weight: bold;
-  text-align: center;
-  margin-top: 10px;
 }
 
-#prev-button,
-#next-button {
-  background-color: #d4d412;
-  color: white;
-  font-size: 16px;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-  margin: 5px;
-  transition: background-color 0.3s ease, text-shadow 0.3s ease;
-}
-
-/* Adjust Next button's position */
-#next-button {
-  margin-left: 460px; /* Push the 'Next' button further to the right */
-}
-
-/* Hover effect for pagination buttons */
-#prev-button:hover,
-#next-button:hover {
-  background-color: #bd3c04;
-  text-shadow: 0 0 5px #ffe81f, 0 0 10px #ffe81f;
-  font-weight: bold;
-}
-
-/* Active state for buttons */
-#prev-button:active,
-#next-button:active {
-  background-color: #ff591f;
-  text-shadow: 0 0 10px #ffe81f, 0 0 15px #ffe81f;
-}
-
-button:disabled {
-  background-color: #d4d412;
-  color: white;
-  cursor: not-allowed;
-}
-
-/* Dialog box styles */
-.dialog {
+.modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
+  background: rgba(0,0,0,0.6);
   display: flex;
-  justify-content: center;
   align-items: center;
-  z-index: 1000;
+  justify-content: center;
 }
 
-.dialog-content {
-  background-color: #111;
-  padding: 20px;
-  border: 1px solid #ff1f1f;
-  border-radius: 10px;
-  max-width: 400px;
-  color: #fff;
-  position: relative;
-  text-align: center;
-}
-
-.close {
-  position: absolute;
-  top: 5px;
-  right: 10px;
-  color: #ff391fdc;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-.hidden {
+.modal.hidden {
   display: none;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .characters > li {
-    flex: 1 1 100%;
-  }
-}
-
-/* Default: Baby Yoda cursor everywhere */
-* {
-  cursor: url('baby-yoda-so-cute.gif') 16 16, auto !important;
-}
-
-/* Override on hover/focus/active states for interactivity */
-button:hover,
-button:focus,
-button:active,
-input:hover,
-input:focus,
-input:active {
-  cursor: url('lightsaber.png') 16 16, auto !important;
-}
-
-/* Optional: also override for clickable links */
-a:hover  {
-  cursor: url('lightsaber.png') 16 16, auto !important;
-}
-
-.crawl-container {
-  position: fixed;
-  z-index: 9999;
-  width: 100%;
-  height: 100vh;
-  background: black;
-  overflow: hidden;
-  color: #ffe81f;
-  font-family: 'Pathway Gothic One', sans-serif;
-}
-
-.fade {
-  position: absolute;
-  top: 0;
-  bottom: 60%;
-  width: 100%;
-  background-image: linear-gradient(to top, transparent, black 80%);
-  z-index: 2;
-}
-
-.star-wars {
-  position: relative;
-  height: 100%;
-  perspective: 400px;
-}
-
-.crawl {
-  position: absolute;
-  top: 100%;
-  left: -40%;
-  transform-origin: 50% 100%;
-  transform: rotateX(25deg) translateX(-100px); /* shift left */
-  animation: crawl 60s linear forwards;
-}
-
-
-.crawl .title {
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  max-height: 90%;
+  overflow-y: auto;
   text-align: center;
-  margin-bottom: 0px;
 }
 
-.crawl h1 {
-  font-size: 200px;
-  margin: 0;
-  text-transform: uppercase;
-  white-space: nowrap; /* Prevent line breaks */
+.cursor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 10px;
+  margin-top: 20px;
 }
 
-.crawl p {
-  font-size: 50px;  /* same as h1 */
-  font-weight: bold;
-  text-transform: uppercase;
-  line-height: 1.6;
-  text-align: center;
-  margin-bottom: 20px;
-  color: #ffe81f;
+.cursor-option {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border 0.2s;
 }
 
-
-.crawl-overlay {
-  transition: opacity 2s ease-out, visibility 0s linear 10s; /* Smooth fade out */
-  opacity: 1;
-  visibility: visible; /* Keeps it visible until transition is complete */
+.cursor-option:hover {
+  border: 2px solid #444;
 }
 
-.crawl-overlay.fade-out {
-  opacity: 0;
-  visibility: hidden; /* Hide after fade completes */
-  pointer-events: none; /* Allow clicks and interactions to pass through */
-}
-
-/* Optional: For UI adjustment after crawl fades */
-.ui-wrapper.ready {
-  filter: none;  /* Example: remove any blur or other effects */
-  transition: all 1s ease;
-}
-
-
-@keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-@keyframes crawl {
-  0% {
-    top: 100%;
-    transform: rotateX(25deg) translateZ(0);
-  }
-  100% {
-    top: -200%;
-    transform: rotateX(25deg) translateZ(-1000px);
-  }
+#closeModal {
+  float: right;
+  cursor: pointer;
+  font-size: 24px;
 }
