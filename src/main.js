@@ -140,7 +140,7 @@ function displayCharacters(characters) {
   });
 }
 
-// Show character details
+// Show character details modal
 function showCharacterDialog(character) {
   const modal = document.createElement("div");
   modal.classList.add("character-modal");
@@ -149,16 +149,16 @@ function showCharacterDialog(character) {
   const safeDescription = escapeHTML(character.description);
   const safeURL = character.url;
 
- modal.innerHTML = `
-  <div class="character-content" style="background: #fff; color: #000; padding: 20px; border-radius: 10px; max-width: 500px;">
-    <h2>${escapeHTML(character.name)}</h2>
-    ${image ? `<img src="${image}" alt="${escapeHTML(character.name)}" style="max-width: 200px; display:block; margin: 10px auto;" />` : ""}
-    <p style="white-space: pre-line;">${safeDescription}</p>
-    <a href="${safeURL}" target="_blank" rel="noopener noreferrer">More info</a>
-    <br><br>
-    <button id="close-modal">Close</button>
-  </div>
-`;
+  modal.innerHTML = `
+    <div class="character-content" style="background: #fff; color: #000; padding: 20px; border-radius: 10px; max-width: 500px;">
+      <h2>${escapeHTML(character.name)}</h2>
+      ${image ? `<img src="${image}" alt="${escapeHTML(character.name)}" style="max-width: 200px; display:block; margin: 10px auto;" />` : ""}
+      <p style="white-space: pre-line;">${safeDescription}</p>
+      <a href="${safeURL}" target="_blank" rel="noopener noreferrer">More info</a>
+      <br><br>
+      <button id="close-modal">Close</button>
+    </div>
+  `;
 
   Object.assign(modal.style, {
     position: "fixed",
@@ -180,13 +180,13 @@ function showCharacterDialog(character) {
   });
 }
 
-// Show error in UI
+// Show error message
 function displayError(message) {
   results.innerHTML = `<p style="color:red;">${escapeHTML(message)}</p>`;
   paginationControls.innerHTML = "";
 }
 
-// Escape HTML to prevent injection and layout breakage
+// Escape HTML function
 function escapeHTML(str) {
   return String(str)
     .replace(/&/g, "&amp;")
@@ -196,99 +196,116 @@ function escapeHTML(str) {
     .replace(/'/g, "&#039;");
 }
 
-// Start app
-fetchKICharacters();
+// Initialization on DOMContentLoaded
 document.addEventListener("DOMContentLoaded", function () {
+  // Video modal elements
   const videoModal = document.getElementById("intro-modal");
   const video = document.getElementById("intro-video");
   const overlay = document.getElementById("start-overlay");
   const startBtn = document.getElementById("start-button");
 
-  // Just in case any elements are missing
-  if (!videoModal || !video || !overlay || !startBtn) {
-    console.error("Modal elements missing");
-    return;
-  }
-
-  // Show both modals initially
-  videoModal.style.display = "flex";
-  overlay.style.display = "flex";
-
-  // Start with muted autoplay
-  video.currentTime = 0;
-  video.muted = true;
-  video.play().catch(err => console.warn("Muted autoplay failed:", err));
-
-  // Start button logic
-  startBtn.addEventListener("click", () => {
-    overlay.style.display = "none";     // Hide overlay modal
-    video.muted = false;                // Unmute and restart video
-    video.currentTime = 0;
-    video.play().catch(err => console.error("Playback with sound failed:", err));
-  });
-
-    // Close video modal on *any* click (except the start button itself, the more info button, and the cursor button)
- document.addEventListener("click", (e) => {
-  const isStartButton = e.target === startBtn;
-  const isCursorModal = modal.contains(e.target) || e.target === chooseCursorBtn;
-  const isInsideCharacterModal = e.target.closest(".character-content") !== null;
-  const isMoreInfoLink = e.target.closest("a[href]")?.getAttribute("href") !== "#";
-
-  if (isStartButton || isCursorModal || isInsideCharacterModal || isMoreInfoLink) return;
-
-  e.preventDefault();
-  overlay.style.display = "none";
-  videoModal.style.display = "none";
-  video.pause();
-  video.currentTime = 0;
-});
-
-
-  // Close video modal and stop video on spacebar
-  document.addEventListener("keydown", (e) => {
-    if (e.code === "Space") {
-      overlay.style.display = "none";
-      videoModal.style.display = "none";
-      video.pause();
-      video.currentTime = 0;
-    }
-  });
-});
-
-// Cursor Selector Logic
-document.addEventListener("DOMContentLoaded", function () {
+  // Cursor modal elements
   const chooseCursorBtn = document.getElementById('choose-cursor');
   const cursorModal = document.getElementById('cursorModal');
   const closeModal = document.getElementById('closeModal');
   const cursorOptions = document.querySelectorAll('.cursor-option');
 
-  // Show cursor selection modal
-  chooseCursorBtn.addEventListener('click', function (event) {
-    event.preventDefault();
-    event.stopPropagation();
-    console.log('Choose Cursor clicked');
-    cursorModal.classList.add('visible');
-    cursorModal.classList.remove('hidden');
-  });
+  // Verify required elements exist
+  if (!videoModal || !video || !overlay || !startBtn) {
+    console.error("Video modal elements missing");
+  } else {
+    // Show modals initially
+    videoModal.style.display = "flex";
+    overlay.style.display = "flex";
 
-  // Close modal
-  closeModal.addEventListener('click', function () {
-    cursorModal.classList.remove('visible');
-    cursorModal.classList.add('hidden');
-  });
+    video.currentTime = 0;
+    video.muted = true;
+    video.play().catch(err => console.warn("Muted autoplay failed:", err));
 
-  // Handle cursor selection
-  cursorOptions.forEach(img => {
-    img.addEventListener('click', () => {
-      const imgURL = img.getAttribute('src');
-      document.body.style.cursor = `url(${imgURL}), auto`;
-      localStorage.setItem("chosenCursor", imgURL);
+    startBtn.addEventListener("click", () => {
+      overlay.style.display = "none";     // Hide overlay modal
+      video.muted = false;                // Unmute and restart video
+      video.currentTime = 0;
+      video.play().catch(err => console.error("Playback with sound failed:", err));
+
+      // Auto-close after 41 seconds
+      setTimeout(() => {
+        overlay.style.display = "none";
+        videoModal.style.display = "none";
+        video.pause();
+        video.currentTime = 0;
+      }, 41000);
+    });
+
+    // Close video modal on *any* click outside special elements
+    document.addEventListener("click", (e) => {
+      const isStartButton = e.target === startBtn;
+      const isCursorModal = cursorModal && cursorModal.contains(e.target);
+      const isChooseCursorBtn = e.target === chooseCursorBtn;
+      const isInsideCharacterModal = e.target.closest(".character-content") !== null;
+      const isMoreInfoLink = e.target.closest("a[href]")?.getAttribute("href") !== "#";
+
+      if (isStartButton || isCursorModal || isChooseCursorBtn || isInsideCharacterModal || isMoreInfoLink) {
+        // Click inside protected areas, do not close
+        return;
+      }
+
+      // Otherwise close modal
+      e.preventDefault();
+      overlay.style.display = "none";
+      videoModal.style.display = "none";
+      video.pause();
+      video.currentTime = 0;
+    });
+
+    // Close video modal on spacebar
+    document.addEventListener("keydown", (e) => {
+      if (e.code === "Space") {
+        overlay.style.display = "none";
+        videoModal.style.display = "none";
+        video.pause();
+        video.currentTime = 0;
+      }
+    });
+  }
+
+
+  // Cursor modal logic
+  if (!chooseCursorBtn || !cursorModal || !closeModal) {
+    console.error("Cursor modal elements missing");
+  } else {
+    // Load saved cursor from localStorage
+    const savedCursor = localStorage.getItem("chosenCursor");
+    if (savedCursor) {
+      document.body.style.cursor = `url(${savedCursor}) 0 0, auto`;
+    }
+
+    chooseCursorBtn.addEventListener('click', function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      cursorModal.classList.add('visible');
+      cursorModal.classList.remove('hidden');
+    });
+
+    closeModal.addEventListener('click', function () {
       cursorModal.classList.remove('visible');
       cursorModal.classList.add('hidden');
     });
-  });
+
+    cursorOptions.forEach(img => {
+      img.addEventListener('click', () => {
+        const imgURL = img.getAttribute('src');
+        document.body.style.cursor = `url(${imgURL}) 64 64, auto`;
+        localStorage.setItem("chosenCursor", imgURL);
+        cursorModal.classList.remove('visible');
+        cursorModal.classList.add('hidden');
+      });
+    });
+  }
 });
 
 
+// Start fetching characters on script load
+fetchKICharacters();
 
 
