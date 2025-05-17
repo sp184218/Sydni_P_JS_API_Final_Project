@@ -227,17 +227,22 @@ document.addEventListener("DOMContentLoaded", function () {
     video.play().catch(err => console.error("Playback with sound failed:", err));
   });
 
-    // Close video modal on *any* click (except the start button itself)
-  document.addEventListener("click", (e) => {
-    // Ignore clicks on the start button
-    if (e.target === startBtn) return;
+    // Close video modal on *any* click (except the start button itself, the more info button, and the cursor button)
+ document.addEventListener("click", (e) => {
+  const isStartButton = e.target === startBtn;
+  const isCursorModal = modal.contains(e.target) || e.target === chooseCursorBtn;
+  const isInsideCharacterModal = e.target.closest(".character-content") !== null;
+  const isMoreInfoLink = e.target.closest("a[href]")?.getAttribute("href") !== "#";
 
-    // Hide overlay and video modal
-    overlay.style.display = "none";
-    videoModal.style.display = "none";
-    video.pause();
-    video.currentTime = 0;
-  });
+  if (isStartButton || isCursorModal || isInsideCharacterModal || isMoreInfoLink) return;
+
+  e.preventDefault();
+  overlay.style.display = "none";
+  videoModal.style.display = "none";
+  video.pause();
+  video.currentTime = 0;
+});
+
 
   // Close video modal and stop video on spacebar
   document.addEventListener("keydown", (e) => {
@@ -251,24 +256,39 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Cursor Selector Logic
-const chooseCursorBtn = document.getElementById('chooseCursorBtn');
-const modal = document.getElementById('cursorModal');
-const closeModal = document.getElementById('closeModal');
-const cursorOptions = document.querySelectorAll('.cursor-option');
+document.addEventListener("DOMContentLoaded", function () {
+  const chooseCursorBtn = document.getElementById('choose-cursor');
+  const cursorModal = document.getElementById('cursorModal');
+  const closeModal = document.getElementById('closeModal');
+  const cursorOptions = document.querySelectorAll('.cursor-option');
 
-if (chooseCursorBtn && modal && closeModal && cursorOptions.length) {
-  chooseCursorBtn.onclick = () => modal.classList.remove('hidden');
-  closeModal.onclick = () => modal.classList.add('hidden');
+  // Show cursor selection modal
+  chooseCursorBtn.addEventListener('click', function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    console.log('Choose Cursor clicked');
+    cursorModal.classList.add('visible');
+    cursorModal.classList.remove('hidden');
+  });
 
+  // Close modal
+  closeModal.addEventListener('click', function () {
+    cursorModal.classList.remove('visible');
+    cursorModal.classList.add('hidden');
+  });
+
+  // Handle cursor selection
   cursorOptions.forEach(img => {
     img.addEventListener('click', () => {
       const imgURL = img.getAttribute('src');
       document.body.style.cursor = `url(${imgURL}), auto`;
-      modal.classList.add('hidden');
+      localStorage.setItem("chosenCursor", imgURL);
+      cursorModal.classList.remove('visible');
+      cursorModal.classList.add('hidden');
     });
   });
-} else {
-  console.warn("Cursor modal elements are missing from the DOM.");
-}
+});
+
+
 
 

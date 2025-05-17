@@ -92,7 +92,8 @@ body {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
+
 }
 .character-modal {
   position: fixed;
@@ -268,7 +269,7 @@ button {
 }
 
 .modal-content {
-  background: white;
+  background: rgba(0, 0, 0, 0.8); /* Transparent black */
   padding: 20px;
   border-radius: 10px;
   max-height: 90%;
@@ -276,28 +277,84 @@ button {
   text-align: center;
 }
 
+/* Modal Container */
+#cursorModal {
+  display: none;
+  position: fixed;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -25%);
+  background: rgba(0, 0, 0, 0.8); /* Transparent black */
+  border: 2px solid #cccccc44;
+  padding: 1.5rem;
+  z-index: 1000;
+  width: fit-content;
+  max-width: 90vw;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Show Modal */
+#cursorModal.visible {
+  display: block;
+}
+
+/* Modal Inner Content */
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Modal Title */
+#cursorModal h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  text-align: center;
+  color: #360202;
+}
+
+/* Close Button */
+#closeModal {
+  align-self: flex-end;
+  cursor: pointer;
+  font-size: 24px;
+  color: #666;
+  margin-bottom: 0.5rem;
+  transition: color 0.2s ease-in-out;
+}
+
+#closeModal:hover {
+  color: #000;
+}
+
+/* Grid of Cursor Images */
 .cursor-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
   gap: 10px;
   margin-top: 20px;
+  justify-content: center;
 }
 
+/* Individual Cursor Option */
 .cursor-option {
   width: 60px;
   height: 60px;
   object-fit: contain;
   cursor: pointer;
   border: 2px solid transparent;
-  transition: border 0.2s;
+  border-radius: 8px;
+  transition: border 0.2s, transform 0.2s;
 }
 
 .cursor-option:hover {
   border: 2px solid #444;
+  transform: scale(1.05);
 }
 
-#closeModal {
-  float: right;
-  cursor: pointer;
-  font-size: 24px;
+/* Utility Class to Hide Elements */
+.hidden {
+  display: none !important;
 }
+

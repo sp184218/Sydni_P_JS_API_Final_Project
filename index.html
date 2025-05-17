@@ -14,26 +14,24 @@
     <button id="start-button">Start</button>
   </div>
 
-  <!-- Intro Video Modal -->
-  <div id="intro-modal" class="intro-video-modal">
-    <video id="intro-video" autoplay muted playsinline>
-      <source src="Modal KI Intro.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
+ <!-- Intro Video Modal WITH cursor selector inside -->
+<div id="intro-modal" class="intro-video-modal">
+  <video id="intro-video" autoplay muted playsinline>
+    <source src="Modal KI Intro.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
 
-    <div class="modal-buttons">
-      <button id="choose-cursor">Choose Cursor</button>
-      <button id="random-cursor">Click Random Cursor</button>
-    </div>
+  <div class="modal-buttons">
+    <button id="choose-cursor">Choose Cursor</button>
+    <button id="random-cursor">Click Random Cursor</button>
   </div>
 
-  <!-- Cursor Selection Modal -->
+  <!-- Cursor Selection Box (Initially Hidden) -->
   <div id="cursorModal" class="modal hidden">
     <div class="modal-content">
       <span id="closeModal" class="close" role="button" aria-label="Close Cursor Modal">&times;</span>
       <h2>Select Your Cursor</h2>
       <div class="cursor-grid">
-        <!-- Cursor Options -->
         <img src="images/Shadow Jago-Photoroom.png" class="cursor-option" alt="Shadow Jago">
         <img src="images/spinal-Photoroom.png" class="cursor-option" alt="Spinal">
         <img src="images/TJ Combo-Photoroom.png" class="cursor-option" alt="TJ Combo">
@@ -49,6 +47,8 @@
       </div>
     </div>
   </div>
+</div>
+
 
   <!-- Search Container -->
   <div class="search-container">
@@ -80,11 +80,7 @@
       <div id="dialog-body"></div>
     </div>
   </div>
-
-  <!-- Background Video -->
-  <video id="background-video" autoplay loop muted playsinline>
-    <source src="killer_instinct_intro.mp4" type="video/mp4" />
-  </video>
+ 
 
   <script type="module" src="/src/main.js"></script>
 </body>
