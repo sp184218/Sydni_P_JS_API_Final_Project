@@ -30,7 +30,7 @@ button {
 #search-input {
   padding: 10px;
   font-size: 16px;
-  margin: 20px auto;
+  margin: 170px auto;
   width: 80%;
   max-width: 400px;
   border-radius: 5px;
@@ -405,7 +405,10 @@ body {
   min-height: 100vh;
 }
 
-
+/* Center the search input and related text */
+#search-input {
+  margin-top: 0; /* remove any top margin pushing it down */
+}
 
 #search-input,
 #results,
@@ -428,3 +431,93 @@ input[type="text"], textarea {
   cursor: text !important;
 }
 
+.character-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin: 30px auto;
+  max-width: 600px;
+  padding: 10px;
+}
+
+.char-btn {
+  background-color: #ffffff;
+  color: #000080; /* navy blue text */
+  border: 2px solid #add8e6;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.char-btn:hover {
+  background-color: #add8e6;   /* light blue */
+  color: #000080;              /* navy blue */
+  transform: scale(1.05);
+  box-shadow: 0 0 15px #0000ff, 0 0 25px #add8e6;
+  cursor: pointer;
+}
+
+/* Modal Styling */
+.popup-hidden {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.8);
+}
+
+.popup-content {
+  display: none; /* or flex when visible */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.8);
+
+  /* Add flexbox centering */
+  display: flex;              /* Enables flex layout */
+  justify-content: center;    /* Center horizontally */
+  align-items: center;        /* Center vertically */
+
+  overflow: auto;             /* Keep scroll if needed */
+}
+
+
+.popup-close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.popup-close:hover,
+.popup-close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Button Styling */
+.button-container {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
+}
+
+.character-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+
+
+.hidden-desc {
+  display: none;
+}

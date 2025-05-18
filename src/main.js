@@ -345,3 +345,39 @@ document.addEventListener("DOMContentLoaded", function () {
 // Start fetching characters on script load
 fetchKICharacters();
 
+const charButtons = document.querySelectorAll(".char-btn");
+const popupModal = document.getElementById("popup-modal");
+const popupImage = document.getElementById("popup-image");
+const popupDescription = document.getElementById("popup-description");
+const popupClose = document.querySelector(".popup-close");
+
+charButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const gifSrc = button.getAttribute("data-gif");
+    popupImage.src = gifSrc;
+
+    // Determine which description to show
+    let descriptionId = "";
+    if (button.classList.contains("favorite")) {
+      descriptionId = "orchid-info";
+    } else if (button.classList.contains("main")) {
+      descriptionId = "jago-info";
+    } else if (button.classList.contains("fighter")) {
+      descriptionId = "cinder-info";
+    }
+
+    const descriptionElement = document.getElementById(descriptionId);
+    if (descriptionElement) {
+      popupDescription.innerHTML = descriptionElement.innerHTML;
+    }
+
+    popupModal.classList.remove("popup-hidden");
+  });
+});
+
+// Close the popup
+popupClose.addEventListener("click", () => {
+  popupModal.classList.add("popup-hidden");
+});
+
+
