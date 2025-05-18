@@ -1,4 +1,4 @@
-# 🌌 Star Wars Character Database
+# 🎮 Sydematic's Killer Instinct Character DB
 
 Welcome to **Sydematic's Killer Instinct Character DB** — a fast, interactive way to explore the warriors of Rare’s classic fighting series, Killer Instinct!
 
