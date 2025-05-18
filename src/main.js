@@ -5,6 +5,51 @@ let searchQuery = "";
 let allCharacters = [];
 let filteredCharacters = [];
 
+// Your 12 cursors with hotspots (adjust hotspots per image if needed)
+const cursors = [
+  { src: 'images/ShadowJago-Photoroom.png', x: 16, y: 16 },
+  { src: 'images/spinal-Photoroom.png', x: 16, y: 16 },
+  { src: 'images/TJCombo-Photoroom.png', x: 16, y: 16 },
+  { src: 'images/Tusk-Photoroom.png', x: 16, y: 16 },
+  { src: 'images/Sabrewulf-Photoroom.png', x: 16, y: 16 },
+  { src: 'images/orchid-Photoroom.png', x: 16, y: 16 },
+  { src: 'images/kim-Photoroom.png', x: 16, y: 16 },
+  { src: 'images/Maya-Photoroom.png', x: 16, y: 16 },
+  { src: 'images/Jago-Photoroom.png', x: 16, y: 16 },
+  { src: 'images/cinder-Photoroom.png', x: 16, y: 16 },
+  { src: 'images/fulgore-original-Photoroom.png', x: 16, y: 16 },
+  { src: 'images/glacius-Photoroom.png', x: 16, y: 16 },
+];
+
+// Apply cursor globally via CSS rule on the fly
+function applyCursor(cursor) {
+  // Remove existing cursor style if any
+  let styleEl = document.getElementById('dynamic-cursor-style');
+  if (!styleEl) {
+    styleEl = document.createElement('style');
+    styleEl.id = 'dynamic-cursor-style';
+    document.head.appendChild(styleEl);
+  }
+  styleEl.textContent = `
+    * {
+      cursor: url('${cursor.src}') ${cursor.x} ${cursor.y}, auto !important;
+    }
+  `;
+}
+
+// Example: user clicks on an image to select cursor
+document.querySelectorAll('.cursor-option').forEach((img, idx) => {
+  img.style.cursor = 'pointer'; // show clickable
+  img.addEventListener('click', () => {
+    applyCursor(cursors[idx]);
+  });
+});
+
+// Optional: set default cursor on page load
+applyCursor(cursors[0]);
+
+
+
 const searchInput = document.getElementById("search-input");
 const results = document.getElementById("results");
 const paginationControls = document.getElementById("pagination-controls");
@@ -269,7 +314,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-
   // Cursor modal logic
   if (!chooseCursorBtn || !cursorModal || !closeModal) {
     console.error("Cursor modal elements missing");
@@ -304,8 +348,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-
 // Start fetching characters on script load
 fetchKICharacters();
-
 

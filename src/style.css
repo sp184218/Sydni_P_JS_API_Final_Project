@@ -8,6 +8,17 @@ body {
   text-align: center;
 }
 
+#background-image {
+  position: fixed;       /* Fix position so it stays put */
+  top: 0;
+  left: 0;
+  width: 100vw;          /* Full viewport width */
+  height: 100vh;         /* Full viewport height */
+  object-fit: cover;     /* Cover entire area, maintain aspect ratio */
+  z-index: -1;           /* Send behind everything */
+  pointer-events: none;  /* Let clicks pass through */
+}
+
 button {
   margin: 20px;
   padding: 10px 20px;
@@ -374,3 +385,67 @@ button {
   pointer-events: auto !important;
   z-index: 1000;
 }
+
+.start-instructions {
+  position: absolute;
+  top: 20px;
+  width: 100%;
+  overflow: hidden;
+  z-index: 1001;
+  text-align: left;
+  padding: 0 20px;
+}
+
+.start-instructions p {
+  display: inline-block;
+  white-space: nowrap;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1rem;
+  color: gold;
+  font-weight: bold;
+  animation: slideText 15s linear infinite;
+}
+
+@keyframes slideText {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+/* Center the search section vertically */
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+/* Center the search input and related text */
+#search-input {
+  margin-top: 0; /* remove any top margin pushing it down */
+}
+
+#search-input,
+#results,
+#pagination-controls {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+body {
+  cursor: url('cursors/default.png') 16 16, auto;
+}
+
+/* For buttons and links */
+a, button, input, textarea, select, label {
+  cursor: pointer !important;
+}
+
+/* Text inputs keep text cursor */
+input[type="text"], textarea {
+  cursor: text !important;
+}
+
