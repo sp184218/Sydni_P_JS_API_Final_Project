@@ -212,8 +212,6 @@ function showCharacterDialog(character) {
     </div>
   `;
 
-
-
   document.body.appendChild(modal);
 
   document.getElementById("close-modal").addEventListener("click", () => {

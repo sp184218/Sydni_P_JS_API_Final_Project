@@ -135,21 +135,13 @@ button {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(76, 51, 199, 0.7);
+  background-color: rgba(129, 81, 17, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 9999;
 }
 
-.character-content {
-  background:#63070a;
-  color: #63070a;
-  padding: 20px;
-  border-radius: 10px;
-  max-width: 500px;
-  text-align: left;
-}
 
 /* Intro modal and video */
 #intro-modal,
@@ -413,10 +405,7 @@ body {
   min-height: 100vh;
 }
 
-/* Center the search input and related text */
-#search-input {
-  margin-top: 0; /* remove any top margin pushing it down */
-}
+
 
 #search-input,
 #results,
