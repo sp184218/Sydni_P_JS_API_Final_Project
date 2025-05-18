@@ -189,15 +189,24 @@ function displayCharacters(characters) {
 function showCharacterDialog(character) {
   const modal = document.createElement("div");
   modal.classList.add("character-modal");
-
-  const image = character.images[0] || "";
+ const defaultImage = "ki.jpg";
+    const imageSrc = character.images[0] || defaultImage;
   const safeDescription = escapeHTML(character.description);
   const safeURL = character.url;
 
-  modal.innerHTML = `
-    <div class="character-content" style="background: #fff; color: #000; padding: 20px; border-radius: 10px; max-width: 500px;">
+ modal.innerHTML = `
+    <div class="character-content" 
+     style="background-color: #add8e6;  /* light blue */
+            color: #000080;           /* navy blue text */
+            padding: 20px; 
+            border-radius: 10px; 
+            max-width: 500px; 
+            transform: scale(1.05);
+            box-shadow: 0 0 15px #0000ff, 0 0 25px #add8e6;
+            cursor: pointer;">
+  <!-- your content here -->
       <h2>${escapeHTML(character.name)}</h2>
-      ${image ? `<img src="${image}" alt="${escapeHTML(character.name)}" style="max-width: 200px; display:block; margin: 10px auto;" />` : ""}
+      ${imageSrc ? `<img src="${imageSrc}" alt="${escapeHTML(character.name)}" style="max-width: 200px; display:block; margin: 10px auto;" onerror="this.onerror=null;this.src='${defaultImage}';" />` : ""}
       <p style="white-space: pre-line;">${safeDescription}</p>
       <a href="${safeURL}" target="_blank" rel="noopener noreferrer">More info</a>
       <br><br>
@@ -205,18 +214,8 @@ function showCharacterDialog(character) {
     </div>
   `;
 
-  Object.assign(modal.style, {
-    position: "fixed",
-    top: "0",
-    left: "0",
-    width: "100%",
-    height: "100%",
-    backgroundColor: "rgba(0,0,0,0.7)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: "9999"
-  });
+
+
 
   document.body.appendChild(modal);
 
