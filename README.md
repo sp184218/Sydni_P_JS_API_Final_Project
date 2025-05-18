@@ -1,8 +1,10 @@
 # 🌌 Star Wars Character Database
 
-Welcome to **Sydni's Star Wars Character DB** — a fun, interactive, and visually immersive way to explore characters from the Star Wars universe!
+Welcome to **Sydematic's Killer Instinct Character DB** — a fast, interactive way to explore the warriors of Rare’s classic fighting series, Killer Instinct!
 
-This project started as a simple search bar assignment... but naturally, I went full Jedi and took it to hyperspace.
+This project I thought would be straightforward since I had done an API project prior, but sourcing a Killer Instinct API turned out to be a real challenge — most character databases just didn’t exist or lacked the depth I wanted. Because I was determined to bring this nostalgic series to life the right way, I built my very own custom API to house the data I needed. From there, the project evolved into an interactive showcase with animated GIFs, custom styling, and character-specific lore overlays — all in true ULTRA fashion.
+
+Feel free to clone it, pick your favourite fighter, and unleash a C-C-C-COMBO BREAKER on the code!
 
 ## 📚 Educational Purpose
 
@@ -17,11 +19,14 @@ This project demonstrates how to:
 ## ✨ Features
 
 - 🔎 **Search Functionality** – Filter characters by name in real-time.
-- 🖱️ **Custom Cursors** – Baby Yoda for browsing; a green lightsaber for hover/clickable items.
-- 🎥 **Background Video** – Looping Star Wars video to set the ambiance.
-- 🔇 **Mute Toggle** – Click the video or press spacebar to mute/unmute audio (ignores typing inputs).
-- 🎨 **Stylized Buttons** – Custom button colors and effects, styled with the Star Wars theme.
-- 📁 **Character Info** – Dynamically loaded and displayed Star Wars characters from the API.
+- 🖱️ **Custom Cursors** – Created a modal box for 12 Killer Instinct Characters to choose from for browsing; 
+- 🎥 **Background Video** – Created a video Modal to show the Classic intro of Killer Instinct before reaching the main page.
+- 💡 **Spacebar Toggle** – Press the spacebar to skip intro modals and jump directly into the main content.
+- ⚠ **Instructional Text Animation** - Implemented a sliding text animation to guide users on how to navigate the page in an engaging, retro-inspired way.
+- ⏳ **Loading Spinner** - Built a custom spinning animation that appears while the API content is loading, giving users visual feedback during data fetch delays.
+- 🎨 **Stylized Buttons** – Custom button colors and effects, styled with the theme of each display. 
+- 📁 **API Info** -  Since no complete Killer Instinct API existed, I developed my own backend API to source and serve the character data accurately.
+- 📁 **Character Info** – Dynamically loaded and displayed Killer Instinct characters description from the API.
 
 ## 🚀 Tech Stack
 
@@ -33,17 +38,15 @@ This project demonstrates how to:
 ## 🔧 How to Run Locally
 
 ```bash
-git clone https://github.com/sp184218/Sydni_P_star_wars_character_db.git
-cd Sydni_P_star_wars_character_db
+git clone https://github.com/sp184218/Sydni_P_JS_API_Final_Project.git
+cd Killer Instinct FInal API IF Project
 # Open index.html in your browser
 💡 Notes
 Best viewed on desktop.
 
 All media (video, GIFs, cursors) are locally hosted.
 
-Built with passion for both learning and Star Wars.
+Built with passion for both learning and love for nostalgia.
 
 🧑‍💻 Author
-Sydni P.
-National Security student by day, code Padawan by night.
-Always one with the Force... and the DOM.
+Sydni P. aka Sydematic
