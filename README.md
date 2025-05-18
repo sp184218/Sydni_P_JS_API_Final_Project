@@ -39,11 +39,11 @@ Displays the classic Killer Instinct intro before reaching the main page.
 ![Intro Video Modal](./README%20Screenshots/Intro%20Video%20Modal.png)
 
 ### 🔍 Search Filter in Action
-Users can filter characters by name in real time with the help of my own API.
+Users can filter characters by name in real time.
 ![Search Filter](./README%20Screenshots/Search%20Filter%20Main%20page.png)
 
 ### 🔗 "More Info" Redirect Feature
-Clicking “More Info” brings users to external pages with additional character info.
+Clicking “More Info” brings users to external pages with additional character info with the help of my own API.
 ![More Info Redirect](./README%20Screenshots/More%20Info%20redirect%20link.png)
 
 ### 🧠 Extra Feature Buttons – Personal Opinions
