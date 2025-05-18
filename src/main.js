@@ -380,25 +380,4 @@ popupClose.addEventListener("click", () => {
   popupModal.classList.add("popup-hidden");
 });
 
-const swiper = new Swiper('.swiper-container', {
-  // Optional parameters
-  direction: 'horizontal',
-  loop: false,
-  
-  // If you want pagination dots
-  pagination: {
-    el: '.swiper-pagination',
-    clickable: true,
-  },
-  
-  // Navigation arrows
-  navigation: {
-    nextEl: '.swiper-button-next',
-    prevEl: '.swiper-button-prev',
-  },
-  
-  // You can add other settings like speed, slidesPerView, etc.
-});
-
-
 

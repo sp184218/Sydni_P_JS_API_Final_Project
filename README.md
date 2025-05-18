@@ -28,6 +28,29 @@ This project demonstrates how to:
 - 📁 **API Info** -  Since no complete Killer Instinct API existed, I developed my own backend API to source and serve the character data accurately.
 - 📁 **Character Info** – Dynamically loaded and displayed Killer Instinct characters description from the API.
 
+## 📸 Screenshots
+
+### 🟢 Start Overlay Instructions
+This modal guides users on how to navigate the experience.
+![Start Overlay Modal](./README%20Screenshots/Start%20Overlay%20Modal.png)
+
+### 🎥 Intro Video Modal
+Displays the classic Killer Instinct intro before reaching the main page.
+![Intro Video Modal](./README%20Screenshots/Intro%20Video%20Modal.png)
+
+### 🔍 Search Filter in Action
+Users can filter characters by name in real time with the help of my own API.
+![Search Filter](./README%20Screenshots/Search%20Filter%20Main%20page.png)
+
+### 🔗 "More Info" Redirect Feature
+Clicking “More Info” brings users to external pages with additional character info.
+![More Info Redirect](./README%20Screenshots/More%20Info%20redirect%20link.png)
+
+### 🧠 Extra Feature Buttons – Personal Opinions
+Special buttons reveal my personal thoughts about certain characters.
+![Personal Info Buttons](./README%20Screenshots/Extra%20personal%20info.png)
+
+
 ## 🚀 Tech Stack
 
 - HTML5
