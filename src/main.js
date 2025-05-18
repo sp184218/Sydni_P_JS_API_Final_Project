@@ -204,16 +204,13 @@ function showCharacterDialog(character) {
             transform: scale(1.05);
             box-shadow: 0 0 15px #0000ff, 0 0 25px #add8e6;
             cursor: pointer;">
-  <!-- your content here -->
       <h2>${escapeHTML(character.name)}</h2>
-      ${imageSrc ? `<img src="${imageSrc}" alt="${escapeHTML(character.name)}" style="max-width: 200px; display:block; margin: 10px auto;" onerror="this.onerror=null;this.src='${defaultImage}';" />` : ""}
-      <p style="white-space: pre-line;">${safeDescription}</p>
+     <p style="white-space: pre-line;">${safeDescription}</p>
       <a href="${safeURL}" target="_blank" rel="noopener noreferrer">More info</a>
       <br><br>
       <button id="close-modal">Close</button>
     </div>
   `;
-
 
 
 
